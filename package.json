@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "email-validator": "^2.0.4",
+    "telegraf": "^4.12.2",
+    "uuid": "^9.0.0"
+  },
+  "type": "module"
+}

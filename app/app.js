@@ -22,7 +22,7 @@ async function addUser (email, filePath=process.env.XRAY_JSON_PATH) {
     if(email == findUser(email, xrayJson).email)
         return 'The email is already present. Enter another email';
 
-    newXrayConfig["inbounds"][1]["settings"]["clients"].push({id : uuidv4(), flow : "xtls-rprx-direct", level : 2, email : email}) 
+    newXrayConfig["inbounds"][0]["settings"]["clients"].push({id : uuidv4(), flow : "xtls-rprx-vision", level : 2, email : email}) 
     // fs.writeFileSync('tempxray.json', JSON.stringify(newXrayConfig, null, 2))
     try{ 
         writeToFile(filePath, newXrayConfig );
@@ -40,7 +40,7 @@ async function addUser (email, filePath=process.env.XRAY_JSON_PATH) {
  function findUser(email,fileVariable, newdatavariable) { 
     //find a user in the newvarible
     if (newdatavariable) {
-        for (let i of newdatavariable["inbounds"][1]["settings"]["clients"])  {
+        for (let i of newdatavariable["inbounds"][0]["settings"]["clients"])  {
             for (let j in i) { 
                 if (j == 'email'){
                     if (i[j] == email) {return i}
@@ -53,7 +53,7 @@ async function addUser (email, filePath=process.env.XRAY_JSON_PATH) {
      }
     //find a user in the file
     if (fileVariable) {
-        for (let i of fileVariable["inbounds"][1]["settings"]["clients"])  {
+        for (let i of fileVariable["inbounds"][0]["settings"]["clients"])  {
             for (let j in i) { 
                 if (j == 'email'){
                     if (i[j] == email) {return i}
@@ -71,13 +71,13 @@ async function addUser (email, filePath=process.env.XRAY_JSON_PATH) {
 async function delUser(email, fileVariable=xrayJson, filePath=process.env.XRAY_JSON_PATH) { 
     if (fileVariable) { 
         let indexOfI = 0;
-        for (let i of fileVariable["inbounds"][1]["settings"]["clients"])  {
+        for (let i of fileVariable["inbounds"][0]["settings"]["clients"])  {
             console.log(indexOfI)
             for (let j in i) { 
                 if (j == 'email') { 
                     if (i[j]==email) {
                         console.log(i.indexOf)
-                        fileVariable["inbounds"][1]["settings"]["clients"].splice(indexOfI, 1);
+                        fileVariable["inbounds"][0]["settings"]["clients"].splice(indexOfI, 1);
                         try{ 
                              writeToFile(filePath, fileVariable );
                         }
@@ -102,7 +102,7 @@ async function delUser(email, fileVariable=xrayJson, filePath=process.env.XRAY_J
 async function viewAllUsers(fileVariable=xrayJson) { 
     if (fileVariable) { 
         let allUsers = {};
-        for (let i of fileVariable["inbounds"][1]["settings"]["clients"])  {
+        for (let i of fileVariable["inbounds"][0]["settings"]["clients"])  {
             if (i['email']) { 
                 // allUsers.push(i['email'])
                 Object.defineProperty(allUsers, i['email'], {

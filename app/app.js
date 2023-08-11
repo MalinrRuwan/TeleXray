@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import * as fs from 'node:fs';
 import { v4 as uuidv4} from 'uuid'
-import  {ChildProcess, execFile, execSync, spawn}  from 'node:child_process';
+import  {ChildProcess, execFile, execSync, spawn, exec}  from 'node:child_process';
 import 'email-validator'
 import { validate } from 'email-validator';
 import {config} from 'dotenv'
@@ -28,14 +28,16 @@ async function addUser (email, filePath=process.env.XRAY_JSON_PATH) {
     newXrayConfig["inbounds"][0]["settings"]["clients"].push({id : uuidv4(), flow : "xtls-rprx-vision", level : 2, email : email}) 
     // fs.writeFileSync('tempxray.json', JSON.stringify(newXrayConfig, null, 2))
     try{ 
-        writeToFile(filePath, newXrayConfig );
-        return findUser(email,undefined, newXrayConfig);
+        await writeToFile(filePath, newXrayConfig);
+        await serviceControl('restart');
+        return Promise.resolve(findUser(email, xrayJson, undefined));
+        
     }
-    catch(err) { 
-        return err
+    catch(e) { 
+        return Promise.reject(e)
     }
     //logic to restart the xray (to be written)
-    // serviceControl('restart');
+    
 }
 
 //functiont to find user
@@ -81,6 +83,7 @@ async function delUser(email, fileVariable=xrayJson, filePath=process.env.XRAY_J
                         fileVariable["inbounds"][0]["settings"]["clients"].splice(indexOfI, 1);
                         try{ 
                              writeToFile(filePath, fileVariable );
+                             await serviceControl('restart')
                         }
                         catch(err) { 
                             return err
@@ -100,7 +103,7 @@ async function delUser(email, fileVariable=xrayJson, filePath=process.env.XRAY_J
 }
 
 //function to view all users
-async function viewAllUsers(fileVariable=xrayJson) { 
+async function viewAllUsers(fileVariable=JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH))) { 
     if (fileVariable) { 
         let allUsers = {};
         for (let i of fileVariable["inbounds"][0]["settings"]["clients"])  {
@@ -127,26 +130,36 @@ async function writeToFile(filePath, variableToSave) {
 }
 
 //function to control the service status of xray.service
-async function serviceControl(command, backupFile = undefined) { 
+async function serviceControl(command, backupFile = process.env.XRAY_JSON_BACKUP_PATH) { 
     if (command == 'restart') {
-        let cmd = spawn('sudo systemctl restart xray.service');
-        return 'xray restarted'
+        // let cmd = spawn('sudo systemctl restart xray.service');
+        exec('sudo systemctl restart xray.service', (error, stderr, stdout) => {
+            if (error || stderr) console.log(error || stderr);
+            console.log(stdout);
+        })
+        return 'Xray-core restarted'
     } else if (command == 'stop') { 
-        let cmd = spawn('sudo systemctl stop xray.service');
-        return 'xray stopped'
+        exec('sudo systemctl stop xray.service', (error, stderr, stdout) => {
+            if (error || stderr) console.log(error || stderr);
+            console.log(stdout);
+        })
+        return 'Xray-core Stopped'
     }
     else if(command == 'start') { 
-        let cmd = spawn('sudo systemctl start xray.service');
-        return 'xray started'
+        exec('sudo systemctl start xray.service', (error, stderr, stdout) => {
+            if (error || stderr) console.log(error || stderr);
+            console.log(stdout);
+        })
+        return 'Xray-core Started'
     }
     
 }
 
-
-// console.log(addUser('kjldf@jgsdfmail.com'))
+//console.log(await serviceControl('start'))
+console.log(addUser('sdsssssddfdf@jgsdfmail.com'))
 //  console.log(delUser('g@gmail.com'))
 // console.log(viewAllUsers())
-
+//console.log(findUser('maliniqrub@gmail.com', JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH))))
 
 
 // module.exports.functions = {delUser : delUser(), viewAllUsers : viewAllUsers(), addUser : addUser(), writeToFile : writeToFile(), serviceControl : serviceControl(), findUser : findUser() }

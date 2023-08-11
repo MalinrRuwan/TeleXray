@@ -9,60 +9,112 @@
       "settings": {
         "clients": [
           {
-            "id": "00482578-37d4-4b72-9245-365844d6661a",
-            "flow": "xtls-rprx-direct",
+            "id": "ea823c73-6025-4473-bb07-ef47a43b598f",
+            "flow": "xtls-rprx-vision",
             "level": 2,
-            "email": "d@gmail.com"
+            "email": "maliniqrub@gmail.com"
           },
           {
-            "id": "8b87275e-d755-4a92-8e60-797b6e78c531",
-            "flow": "xtls-rprx-direct",
+            "id": "601eeac1-2e8e-4d43-8954-65e57dc59715",
+            "flow": "xtls-rprx-vision",
             "level": 2,
-            "email": "h@gmail.com"
+            "email": "kkd@gmail.com"
           },
           {
-            "id": "1415a6a5-e17f-4cec-9063-6c980d3d4904",
-            "flow": "xtls-rprx-direct",
+            "id": "db01b95e-c4ad-4a27-9cf9-25735ed8afe0",
+            "flow": "xtls-rprx-vision",
             "level": 2,
-            "email": "i@gmail.com"
+            "email": "kjdldf@jgsdfmail.com"
           },
           {
-            "id": "bcbdeddc-15e1-4f69-a2b5-6781d274001f",
-            "flow": "xtls-rprx-direct",
+            "id": "14a6695c-4831-49d7-a7ae-792c28b86373",
+            "flow": "xtls-rprx-vision",
             "level": 2,
-            "email": "hehejslkf@gmail.com"
+            "email": "kldf@jgsdfmail.com"
           },
           {
-            "id": "f7324e2f-9380-448c-b0f6-f49ade58b36a",
-            "flow": "xtls-rprx-direct",
+            "id": "b5c044fa-6a61-4b3d-b421-b1b0ee94ceec",
+            "flow": "xtls-rprx-vision",
             "level": 2,
-            "email": "sfkfls@gmail.com"
+            "email": "kdf@jgsdfmail.com"
           },
           {
-            "id": "71f97d2c-e499-48ef-9690-33cbb03b6723",
-            "flow": "xtls-rprx-direct",
+            "id": "22278d3a-46f4-46ba-b535-fa272541799a",
+            "flow": "xtls-rprx-vision",
             "level": 2,
-            "email": "kjldf@jgsdfmail.com"
+            "email": "sf@jgsdfmail.com"
+          },
+          {
+            "id": "bed6ab3b-4675-4ec4-8fb4-654ee61032af",
+            "flow": "xtls-rprx-vision",
+            "level": 2,
+            "email": "sfs@jgsdfmail.com"
+          },
+          {
+            "id": "01862df2-55e2-47cb-aabd-39929e1e39ea",
+            "flow": "xtls-rprx-vision",
+            "level": 2,
+            "email": "skjbhdf@jgsdfmail.com"
+          },
+          {
+            "id": "557ee7b6-d530-4c0d-b087-72d0e2c800e9",
+            "flow": "xtls-rprx-vision",
+            "level": 2,
+            "email": "sdsdf@jgsdfmail.com"
+          },
+          {
+            "id": "2fec7f32-d557-4c07-8be0-7656d0123265",
+            "flow": "xtls-rprx-vision",
+            "level": 2,
+            "email": "sdssdfdf@jgsdfmail.com"
+          },
+          {
+            "id": "fff015e2-c9e2-48d0-8453-0f4b6994b7d3",
+            "flow": "xtls-rprx-vision",
+            "level": 2,
+            "email": "sdsssdfdf@jgsdfmail.com"
+          },
+          {
+            "id": "713232d7-9d65-48c7-8b1f-c9864742e93c",
+            "flow": "xtls-rprx-vision",
+            "level": 2,
+            "email": "sdssssddfdf@jgsdfmail.com"
+          },
+          {
+            "id": "c22bfce4-e21c-407a-83a7-8424a4856a4c",
+            "flow": "xtls-rprx-vision",
+            "level": 2,
+            "email": "sdsssssddfdf@jgsdfmail.com"
           }
         ],
         "decryption": "none",
         "fallbacks": [
           {
-            "dest": "www.google.lk:443"
+            "dest": 1310,
+            "xver": 1
           },
           {
-            "alpn": "h2",
-            "dest": 2001,
-            "xver": 0
+            "path": "/websocket",
+            "dest": 1234,
+            "xver": 1
+          },
+          {
+            "path": "/vmesstcp",
+            "dest": 2345,
+            "xver": 1
+          },
+          {
+            "path": "/vmessws",
+            "dest": 3456,
+            "xver": 1
           }
         ]
       },
       "streamSettings": {
         "network": "tcp",
-        "security": "xtls",
-        "xtlsSettings": {
+        "security": "tls",
+        "tlsSettings": {
           "alpn": [
-            "h2",
             "http/1.1"
           ],
           "certificates": [
@@ -75,139 +127,109 @@
       }
     },
     {
-      "port": 2001,
+      "port": 1310,
       "listen": "127.0.0.1",
       "protocol": "trojan",
       "settings": {
         "clients": [
           {
-            "password": "4f410564-e531-400a-ff00-42e438105e7c"
+            "password": "4ee5b22f-b8be-45ce-805c-6de89f525720",
+            "level": 0,
+            "email": "love@example.com"
+          }
+        ],
+        "fallbacks": [
+          {
+            "dest": 80
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "acceptProxyProtocol": true
+        }
+      }
+    },
+    {
+      "port": 1234,
+      "listen": "127.0.0.1",
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "4ee5b22f-b8be-45ce-805c-6de89f525720",
+            "level": 0,
+            "email": "love@example.com"
           }
         ],
         "decryption": "none"
       },
       "streamSettings": {
-        "network": "tcp"
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "acceptProxyProtocol": true,
+          "path": "/websocket"
+        }
       }
     },
     {
-      "port": 80,
+      "port": 2345,
+      "listen": "127.0.0.1",
       "protocol": "vmess",
       "settings": {
         "clients": [
           {
-            "id": "4f410564-e531-400a-ff00-42e438105e7c"
+            "id": "4ee5b22f-b8be-45ce-805c-6de89f525720",
+            "level": 0,
+            "email": "love@example.com"
           }
         ]
       },
       "streamSettings": {
         "network": "tcp",
+        "security": "none",
         "tcpSettings": {
+          "acceptProxyProtocol": true,
           "header": {
             "type": "http",
-            "response": {
-              "version": "1.1",
-              "status": "200",
-              "reason": "OK",
-              "headers": {
-                "Content-Type": [
-                  "application/octet-stream",
-                  "video/mpeg",
-                  "application/x-msdownload",
-                  "text/html",
-                  "application/x-shockwave-flash"
-                ],
-                "Transfer-Encoding": [
-                  "chunked"
-                ],
-                "Connection": [
-                  "keep-alive"
-                ],
-                "Pragma": "no-cache"
-              }
+            "request": {
+              "path": [
+                "/vmesstcp"
+              ]
             }
           }
-        },
-        "security": "none"
+        }
+      }
+    },
+    {
+      "port": 3456,
+      "listen": "127.0.0.1",
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "4ee5b22f-b8be-45ce-805c-6de89f525720",
+            "level": 0,
+            "email": "love@example.com"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "acceptProxyProtocol": true,
+          "path": "/vmessws"
+        }
       }
     }
   ],
-  "routing": {
-    "domainStrategy": "IPIfNonMatch",
-    "rules": [
-      {
-        "type": "field",
-        "ip": [
-          "1.1.1.1"
-        ],
-        "outboundTag": "direct"
-      },
-      {
-        "type": "field",
-        "domain": [
-          "geosite:category-ads-all"
-        ],
-        "outboundTag": "block"
-      },
-      {
-        "type": "field",
-        "domain": [
-          "geosite:google"
-        ],
-        "outboundTag": "direct"
-      },
-      {
-        "type": "field",
-        "ip": [
-          "geoip:private"
-        ],
-        "outboundTag": "block"
-      }
-    ]
-  },
   "outbounds": [
     {
-      "protocol": "freedom",
-      "settings": {
-        "domainStrategy": "UseIPv4"
-      },
-      "tag": "direct"
-    },
-    {
-      "protocol": "blackhole",
-      "settings": {
-        "response": {
-          "type": "http"
-        }
-      },
-      "tag": "block"
-    },
-    {
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "157.230.36.216",
-            "level": 8,
-            "method": "chacha20-poly1305",
-            "ota": false,
-            "password": "",
-            "port": 1234,
-            "users": [
-              {
-                "level": 8,
-                "pass": "admin",
-                "user": "admin"
-              }
-            ]
-          }
-        ]
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": ""
-      },
-      "tag": "socksproxy"
+      "protocol": "freedom"
     }
   ]
 }

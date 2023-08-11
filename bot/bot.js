@@ -3,7 +3,6 @@ import {message} from "telegraf/filters";
 import 'dotenv/config';
 import * as app from "../app/app.js"
 
-
 export const bot = new Telegraf(process.env.BOT_TOKEN)
 
 bot.command('quit', async (ctx) => {
@@ -58,7 +57,7 @@ bot.on(message('text'), async (ctx) => {
   });
 
   
-  // bot.launch();
+  //  bot.launch();
 
   // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));

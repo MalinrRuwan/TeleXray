@@ -4,79 +4,15 @@
   },
   "inbounds": [
     {
-      "listen": "0.0.0.0",
-      "port": 1234,
-      "protocol": "socks",
-      "settings": {
-        "auth": "password",
-        "accounts": [
-          {
-            "user": "admin",
-            "pass": "admin"
-          }
-        ],
-        "udp": true,
-        "ip": "129.150.32.23"
-      }
-    },
-    {
       "port": 443,
       "protocol": "vless",
       "settings": {
         "clients": [
           {
-            "id": "00482578-37d4-4b72-9245-365844d6661a",
-            "flow": "xtls-rprx-direct",
+            "id": "903ecbad-9543-4e89-8f93-8800207bf759",
+            "flow": "xtls-rprx-vision",
             "level": 2,
-            "email": "d@gmail.com"
-          },
-          {
-            "id": "ad675480-bca5-4505-b5fe-75655297d96b",
-            "flow": "xtls-rprx-direct",
-            "level": 2,
-            "email": "f@gmail.com"
-          },
-          {
-            "id": "8b87275e-d755-4a92-8e60-797b6e78c531",
-            "flow": "xtls-rprx-direct",
-            "level": 2,
-            "email": "h@gmail.com"
-          },
-          {
-            "id": "1415a6a5-e17f-4cec-9063-6c980d3d4904",
-            "flow": "xtls-rprx-direct",
-            "level": 2,
-            "email": "i@gmail.com"
-          },
-          {
-            "id": "bcbdeddc-15e1-4f69-a2b5-6781d274001f",
-            "flow": "xtls-rprx-direct",
-            "level": 2,
-            "email": "hehejslkf@gmail.com"
-          },
-          {
-            "id": "f7324e2f-9380-448c-b0f6-f49ade58b36a",
-            "flow": "xtls-rprx-direct",
-            "level": 2,
-            "email": "sfkfls@gmail.com"
-          },
-          {
-            "id": "c720f5ea-6ca2-4fa7-863f-643bac0f2998",
-            "flow": "xtls-rprx-direct",
-            "level": 2,
-            "email": "sdjfkla@gmail.com"
-          },
-          {
-            "id": "71f97d2c-e499-48ef-9690-33cbb03b6723",
-            "flow": "xtls-rprx-direct",
-            "level": 2,
-            "email": "kjldf@jgsdfmail.com"
-          },
-          {
-            "id": "c9b660ef-a308-476c-ab68-fce84820fff4",
-            "flow": "xtls-rprx-direct",
-            "level": 2,
-            "email": "jksldf@sdjklf.sjkldf"
+            "email": "a@gmail.com"
           }
         ],
         "decryption": "none",

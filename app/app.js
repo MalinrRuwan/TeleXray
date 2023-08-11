@@ -5,6 +5,8 @@ import  {ChildProcess, execFile, execSync, spawn}  from 'node:child_process';
 import 'email-validator'
 import { validate } from 'email-validator';
 
+import config from 'dotenv'
+
 let xrayJson = JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH));
 let bakJson = xrayJson;
 
@@ -72,11 +74,9 @@ async function delUser(email, fileVariable=xrayJson, filePath=process.env.XRAY_J
     if (fileVariable) { 
         let indexOfI = 0;
         for (let i of fileVariable["inbounds"][0]["settings"]["clients"])  {
-            console.log(indexOfI)
             for (let j in i) { 
                 if (j == 'email') { 
                     if (i[j]==email) {
-                        console.log(i.indexOf)
                         fileVariable["inbounds"][0]["settings"]["clients"].splice(indexOfI, 1);
                         try{ 
                              writeToFile(filePath, fileVariable );
@@ -91,7 +91,7 @@ async function delUser(email, fileVariable=xrayJson, filePath=process.env.XRAY_J
                     }
                 }
             }
-            indexOfI = indexOfI + 1
+            indexOfI++
         }
         return 'not found'
     }

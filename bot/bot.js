@@ -2,6 +2,9 @@ import { Telegraf, Format } from "telegraf";
 import {message} from "telegraf/filters";
 import 'dotenv/config';
 import * as app from "../app/app.js"
+import {config} from 'dotenv'
+
+config({path : '../.env'})
 
 export const bot = new Telegraf(process.env.BOT_TOKEN)
 

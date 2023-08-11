@@ -4,8 +4,9 @@ import { v4 as uuidv4} from 'uuid'
 import  {ChildProcess, execFile, execSync, spawn}  from 'node:child_process';
 import 'email-validator'
 import { validate } from 'email-validator';
+import {config} from 'dotenv'
 
-import config from 'dotenv'
+config({path : '../.env'})
 
 let xrayJson = JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH));
 let bakJson = xrayJson;

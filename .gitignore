@@ -3,3 +3,4 @@ xray.json
 tempxray.json
 .vscode
 .err_log.txt
+.env

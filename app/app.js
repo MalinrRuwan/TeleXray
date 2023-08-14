@@ -11,8 +11,6 @@ config({path : '../.env'})
 let xrayJson = JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH));
 let bakJson = xrayJson;
 
-writeToFile(process.env.XRAY_JSON_BACKUP_PATH,bakJson)
-
 
 //add users to the xray config
 
@@ -26,7 +24,6 @@ async function addUser (email, filePath=process.env.XRAY_JSON_PATH) {
         return 'The email is already present. Enter another email';
 
     newXrayConfig["inbounds"][0]["settings"]["clients"].push({id : uuidv4(), flow : "xtls-rprx-vision", level : 2, email : email}) 
-    // fs.writeFileSync('tempxray.json', JSON.stringify(newXrayConfig, null, 2))
     try{ 
         await writeToFile(filePath, newXrayConfig);
         await serviceControl('restart');
@@ -86,12 +83,12 @@ async function delUser(email, fileVariable=xrayJson, filePath=process.env.XRAY_J
                              await serviceControl('restart')
                         }
                         catch(err) { 
-                            return err
+                            return Promise.reject(err)
                         }
 
                         //logic to restar xray(to be written)
                         // serviceControl('restart');
-                        return "successfully deleted"
+                        return Promise.resolve('"successfully deleted"')
                     }
                 }
             }
@@ -125,12 +122,19 @@ async function viewAllUsers(fileVariable=JSON.parse(fs.readFileSync(process.env.
 //a function to write to the file. 
 
 async function writeToFile(filePath, variableToSave) {
-    fs.writeFileSync(filePath, JSON.stringify(variableToSave, null, 2))
-    return 'completed';
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(variableToSave, null, 2))
+        return Promise.resolve('completed');
+    }
+    catch(e){
+        return Promise.reject(`Error in writeToFile() ${e}`)
+    }
+    
+    
 }
 
 //function to control the service status of xray.service
-async function serviceControl(command, backupFile = process.env.XRAY_JSON_BACKUP_PATH) { 
+async function serviceControl(command) { 
     if (command == 'restart') {
         // let cmd = spawn('sudo systemctl restart xray.service');
         exec('sudo systemctl restart xray.service', (error, stderr, stdout) => {
@@ -154,13 +158,10 @@ async function serviceControl(command, backupFile = process.env.XRAY_JSON_BACKUP
     }
     
 }
+export {delUser, viewAllUsers, addUser, writeToFile, serviceControl, findUser,}
 
 //console.log(await serviceControl('start'))
-console.log(addUser('sdsssssddfdf@jgsdfmail.com'))
+//console.log(addUser('sdsssssddfdf@jgsdfmail.com'))
 //  console.log(delUser('g@gmail.com'))
 // console.log(viewAllUsers())
 //console.log(findUser('maliniqrub@gmail.com', JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH))))
-
-
-// module.exports.functions = {delUser : delUser(), viewAllUsers : viewAllUsers(), addUser : addUser(), writeToFile : writeToFile(), serviceControl : serviceControl(), findUser : findUser() }
-export {delUser, viewAllUsers, addUser, writeToFile, serviceControl, findUser,}

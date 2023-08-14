@@ -12,7 +12,7 @@ while (count < 10) { //terminate the app after 10 error trys
     }
     catch(e) { 
         console.log(e)
-        fs.appendFileSync(errorLogFile, String(e + " " + slTime))
+        fs.appendFileSync(errorLogFile, String(e + " " + slTime + "\n"))
         count++
     }
 }

@@ -88,7 +88,7 @@ async function delUser(email, fileVariable=xrayJson, filePath=process.env.XRAY_J
 
                         //logic to restar xray(to be written)
                         // serviceControl('restart');
-                        return Promise.resolve('"successfully deleted"')
+                        return Promise.resolve("Successfully deleted")
                     }
                 }
             }

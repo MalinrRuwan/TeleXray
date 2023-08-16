@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import * as fs from 'node:fs';
 import { v4 as uuidv4} from 'uuid'
-import  {ChildProcess, execFile, execSync, spawn, exec}  from 'node:child_process';
+import  {exec}  from 'node:child_process';
 import 'email-validator'
 import { validate } from 'email-validator';
 import {config} from 'dotenv'
@@ -9,7 +9,7 @@ import {config} from 'dotenv'
 config({path : '../.env'})
 
 let xrayJson = JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH));
-let bakJson = xrayJson;
+// let bakJson = xrayJson; (recovery to be implemented)
 
 
 //add users to the xray config

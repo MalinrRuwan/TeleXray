@@ -23,7 +23,7 @@ async function addUser (email, filePath=process.env.XRAY_JSON_PATH) {
     if(email == findUser(email, xrayJson).email)
         return 'The email is already present. Enter another email';
 
-    newXrayConfig["inbounds"][0]["settings"]["clients"].push({id : uuidv4(), flow : "xtls-rprx-vision", level : 2, email : email}) 
+    newXrayConfig["inbounds"][0]["settings"]["clients"].push({id : uuidv4(), level : 2, email : email}) 
     try{ 
         await writeToFile(filePath, newXrayConfig);
         await serviceControl('restart');

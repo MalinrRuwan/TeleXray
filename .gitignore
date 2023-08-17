@@ -3,7 +3,6 @@ xray.json
 tempxray.json
 .vscode
 err_log.txt
-.env
 install.sh
 telexray.code-workspace
 telexray.service

@@ -7,3 +7,4 @@ err_log.txt
 install.sh
 telexray.code-workspace
 telexray.service
+node_modules/

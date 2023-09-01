@@ -8,22 +8,42 @@ import {config} from 'dotenv'
 
 config({path : '../.env'})
 
-let xrayJson = JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH));
+async function openXrayConfig() {
+    try { 
+        let xrayJson = JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH));
+        return Promise.resolve(xrayJson)
+    }
+    catch(e) { 
+        return Promise.reject(e)
+    } 
+    
+}
+//let xrayJson = JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH));
 // let bakJson = xrayJson; (recovery to be implemented)
 
 
 //add users to the xray config
 
-async function addUser (email, filePath=process.env.XRAY_JSON_PATH) {
+async function addUser (email, flow, filePath=process.env.XRAY_JSON_PATH) {
+    let xrayJson = await openXrayConfig()
     let newXrayConfig = xrayJson
     //check if the email is valid
-    if(!validate(email)) return 'The email is not valid.'
+    if(!validate(email)) return Promise.reject('The email is not valid.')
 
     //check if the current email is already present
-    if(email == findUser(email, xrayJson).email)
-        return 'The email is already present. Enter another email';
+    if(email == findUser(email, xrayJson).email) {
+            return 'The email is already present. Enter another email';
+        }
+    if (flow == "tls") { 
+        newXrayConfig["inbounds"][0]["settings"]["clients"].push({id : uuidv4(), level : 2, email : email}) ;
+    }
+    else if (flow == "xtls-rprx-vision") { 
+        newXrayConfig["inbounds"][0]["settings"]["clients"].push({id : uuidv4(), level : 2, email : email, flow: "xtls-rprx-vision"}) ;
+    }
+    else {
+        return Promise.reject('Incorrect Flow method')
+    }
 
-    newXrayConfig["inbounds"][0]["settings"]["clients"].push({id : uuidv4(), level : 2, email : email}) 
     try{ 
         await writeToFile(filePath, newXrayConfig);
         await serviceControl('restart');
@@ -70,7 +90,8 @@ async function addUser (email, filePath=process.env.XRAY_JSON_PATH) {
 
 //function to delete users 
 
-async function delUser(email, fileVariable=xrayJson, filePath=process.env.XRAY_JSON_PATH) { 
+async function delUser(email, fileVariable=openXrayConfig(), filePath=process.env.XRAY_JSON_PATH) { 
+    fileVariable = await openXrayConfig()
     if (fileVariable) { 
         let indexOfI = 0;
         for (let i of fileVariable["inbounds"][0]["settings"]["clients"])  {
@@ -79,16 +100,14 @@ async function delUser(email, fileVariable=xrayJson, filePath=process.env.XRAY_J
                     if (i[j]==email) {
                         fileVariable["inbounds"][0]["settings"]["clients"].splice(indexOfI, 1);
                         try{ 
-                             writeToFile(filePath, fileVariable );
+                             await writeToFile(filePath, fileVariable );
                              await serviceControl('restart')
+                             return Promise.resolve("Successfully deleted")
                         }
                         catch(err) { 
                             return Promise.reject(err)
                         }
-
-                        //logic to restar xray(to be written)
-                        // serviceControl('restart');
-                        return Promise.resolve("Successfully deleted")
+                        
                     }
                 }
             }
@@ -160,8 +179,3 @@ async function serviceControl(command) {
 }
 export {delUser, viewAllUsers, addUser, writeToFile, serviceControl, findUser,}
 
-//console.log(await serviceControl('start'))
-//console.log(addUser('sdsssssddfdf@jgsdfmail.com'))
-//  console.log(delUser('g@gmail.com'))
-// console.log(viewAllUsers())
-//console.log(findUser('maliniqrub@gmail.com', JSON.parse(fs.readFileSync(process.env.XRAY_JSON_PATH))))

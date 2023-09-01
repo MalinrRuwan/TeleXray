@@ -7,3 +7,4 @@ install.sh
 telexray.code-workspace
 telexray.service
 node_modules/
+demo.js

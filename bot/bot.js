@@ -161,5 +161,3 @@ bot.use(addUserStage.middleware());
 bot.hears("/menu", (ctx) => {
   ctx.scene.enter("MENU_SCENE");
 });
-
-bot.launch();

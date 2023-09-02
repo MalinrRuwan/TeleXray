@@ -128,7 +128,7 @@ viewAllUserScene.enter(async (ctx) => {
   let res = await app.viewAllUsers();
   let viewObjectToString = " ";
   if (typeof res == "string") {
-    ctx.reply(res);
+    await ctx.reply(res);
   } else {
     for (let i in res) {
       viewObjectToString +=
@@ -141,7 +141,7 @@ viewAllUserScene.enter(async (ctx) => {
         "</code>" +
         "\n\n";
     }
-    ctx.replyWithHTML(viewObjectToString);
+    await ctx.replyWithHTML(viewObjectToString);
   }
   ctx.scene.enter("MENU_SCENE");
 });

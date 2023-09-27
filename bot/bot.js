@@ -10,6 +10,7 @@ let t; //timer variable
 const menuScene = new Scenes.BaseScene("MENU_SCENE");
 
 //define scenarios
+const protocolSelectionScenario = new Scenes.BaseScene("PROTOCOL_SELECTION_SCENE") 
 const flowSelectionScenario = new Scenes.BaseScene("FLOW_SELECTION_SCENE"); // create a scenario
 const emailReadingScene = new Scenes.BaseScene("EMAIL_READING_SCENE"); // email reading scenario
 const executeScene = new Scenes.BaseScene("EXECUTE_SCENE"); // execute scenario
@@ -18,6 +19,14 @@ const delExecuteScene = new Scenes.BaseScene("DEL_EXECUTE_SCENE"); //deleting ex
 const viewAllUserScene = new Scenes.BaseScene("VIEW_ALL_USER_SCENE"); //view all user
 
 //define keyboards
+const protocolKeyboard  = Markup.keyboard([
+  Markup.button.text("VLESS"),
+  Markup.button.text("VLESS-WS"),
+  Markup.button.text("Trojan"),
+  Markup.button.text("VMESS"),
+  Markup.button.text("Back"),
+])
+  .resize();
 const tlsKeyboard = Markup.keyboard([
   Markup.button.text("TLS"),
   Markup.button.text("XTLS-VISION"),
@@ -40,7 +49,7 @@ menuScene.enter((ctx) => {
 });
 
 menuScene.hears("Add User", (ctx) => {
-  ctx.scene.enter("FLOW_SELECTION_SCENE");
+  ctx.scene.enter("PROTOCOL_SELECTION_SCENE");
 });
 menuScene.hears("Delete User", (ctx) => {
   ctx.scene.enter("EMAIL_DEL_READING_SCENE");
@@ -65,24 +74,49 @@ emailReadingScene.on("text", (ctx) => {
 
 executeScene.enter(async (ctx) => {
   let res = await app
-    .addUser(ctx.session.data.email, ctx.session.data.flow)
+    .addUser(ctx.session.data.email, ctx.session.data.protocol, ctx.session.data.flow)
     .catch((e) => {
       ctx.replyWithHTML(`<b>Error</b> \n\n ${e}`);
     });
-  if (typeof res == "object" && "email" in res && "id" in res) {
-    ctx.replyWithHTML(
-      `<b>Email :</b> <code> ${res.email} </code>\n\n<b>UUID :</b> <code>${
-        res.id
-      }</code>\n\n ${
-        res.flow == "xtls-rprx-vision"
-          ? `<b>Flow : ${res.flow}</b>`
-          : `<b>Flow : TLS</b>`
-      }`,
+    console.log(res)
+    console.log(ctx.session.data.email, ctx.session.data.protocol, ctx.session.data.flow)
+  if (typeof res == "object" && "email" in res && "uuid" in res) {
+    await ctx.replyWithHTML(
+      `<b>Email :</b> <code> ${res.email} </code>\n\n<b>UUID :</b> <code>${res.uuid}</code>\n\n<b>Protocol : ${res.protocol}</b>\n\n<b>Flow : ${res.flow}</b>`,
       replyMainKeyboard
     );
   }
   ctx.scene.enter("MENU_SCENE");
 });
+//protocol selection scenario
+protocolSelectionScenario.enter((ctx)=> { 
+  ctx.reply("Choose the Protocol", protocolKeyboard);
+})
+protocolSelectionScenario.hears("VLESS", (ctx)=> { 
+  ctx.session.data.protocol = 'vless'
+  ctx.scene.enter("FLOW_SELECTION_SCENE")
+})
+protocolSelectionScenario.hears("Trojan", (ctx)=>  { 
+  ctx.session.data.protocol = "trojan";
+  ctx.session.data.flow = null;
+  ctx.scene.enter("EMAIL_READING_SCENE")
+})
+protocolSelectionScenario.hears("VLESS-WS", (ctx)=>  { 
+  ctx.session.data.protocol = "vless-ws";
+  ctx.session.data.flow = null;
+  ctx.scene.enter("EMAIL_READING_SCENE")
+})
+protocolSelectionScenario.hears("VMESS", (ctx)=>  { 
+  ctx.session.data.protocol = "vmess";
+  ctx.session.data.flow = null;
+  ctx.scene.enter("EMAIL_READING_SCENE")
+})
+protocolSelectionScenario.hears("Back", (ctx)=> { 
+  ctx.scene.enter("MENU_SCENE")
+})
+
+
+//flow selection scenario
 
 flowSelectionScenario.enter((ctx) => {
   ctx.reply("Choose the flow", tlsKeyboard);
@@ -130,16 +164,8 @@ viewAllUserScene.enter(async (ctx) => {
   if (typeof res == "string") {
     await ctx.reply(res);
   } else {
-    for (let i in res) {
-      viewObjectToString +=
-        "<code>" +
-        i +
-        "</code>" +
-        " \n" +
-        "<code>" +
-        res[i] +
-        "</code>" +
-        "\n\n";
+    for (let index of res) { 
+      viewObjectToString+= `<b>Email</b> : ${index['email']} \n<b>UUID</b> : <code>${index['uuid']}</code> \n<b>Protocol</b> : ${index['protocol']} \n<b>Flow</b> : ${index['flow']} \n\n`
     }
     await ctx.replyWithHTML(viewObjectToString);
   }
@@ -148,6 +174,7 @@ viewAllUserScene.enter(async (ctx) => {
 //=================================================//
 
 const addUserStage = new Scenes.Stage([
+  protocolSelectionScenario,
   flowSelectionScenario,
   emailReadingScene,
   executeScene,
